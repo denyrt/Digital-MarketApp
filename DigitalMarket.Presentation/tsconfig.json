@@ -1,0 +1,16 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "noImplicitAny": false,
+    "noEmitOnError": true,
+    "removeComments": false,
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "target": "es5",
+    "outDir": "wwwroot/js",
+    "types": [ "jquery" ]
+  },
+  "include": [
+    "scripts"
+  ]
+}
