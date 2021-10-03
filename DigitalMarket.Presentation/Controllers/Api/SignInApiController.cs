@@ -19,14 +19,14 @@ namespace DigitalMarket.Controllers.Api
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginCommand loginQuery)
         {
-            var response = await _mediator.Send(loginQuery);
+            LoginResponse response = await _mediator.Send(loginQuery);
             return response.Success ? Ok(response) : BadRequest(response);
         }
 
         [HttpPost("registry")]
         public async Task<IActionResult> Registry([FromBody] RegistryCommand registryQuery)
         {
-            var response = await _mediator.Send(registryQuery);
+            RegistryResponse response = await _mediator.Send(registryQuery);
             return response.Success ? Ok(response) : BadRequest(response);
         }
     }

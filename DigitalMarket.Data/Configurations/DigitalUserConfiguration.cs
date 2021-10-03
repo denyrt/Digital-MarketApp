@@ -8,7 +8,11 @@ namespace DigitalMarket.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<DigitalUser> builder)
         {
-            
+            builder
+                .HasMany(x => x.ItemInstances)
+                .WithOne(item => item.Owner)
+                .HasForeignKey(item => item.OwnerId)
+                .IsRequired();
         }
     }
 }

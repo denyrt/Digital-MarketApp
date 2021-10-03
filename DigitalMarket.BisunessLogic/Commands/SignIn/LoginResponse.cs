@@ -10,7 +10,7 @@ namespace DigitalMarket.BisunessLogic.Commands.SignIn
         public static LoginResponse FromSuccess(string accessToken) => new()
         {
             Success = true,
-            Message = ResponseMessages.Success,
+            Code = ResponseCodes.Success,
             AccessToken = accessToken
         };
     }

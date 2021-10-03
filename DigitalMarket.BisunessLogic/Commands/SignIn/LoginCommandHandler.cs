@@ -27,12 +27,12 @@ namespace DigitalMarket.BisunessLogic.Commands.SignIn
 
             if (!await _aspNetUserManager.CheckPasswordAsync(user, request.Password))
             {
-                return LoginResponse.FromError(ResponseMessages.InvalidCredentials);
+                return LoginResponse.FromError(ResponseCodes.InvalidCredentials);
             }
 
             if (!user.EmailConfirmed)
             {
-                return LoginResponse.FromError(ResponseMessages.EmailNotConfirmed);
+                return LoginResponse.FromError(ResponseCodes.EmailNotConfirmed);
             }
 
             return LoginResponse.FromSuccess(_jwtFactory.GenerateJwtToken(user));

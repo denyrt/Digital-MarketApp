@@ -1,0 +1,27 @@
+﻿body {
+
+}
+
+.market-header {
+    margin: 0rem auto;
+    padding: 1rem;
+}
+
+.market-list {
+    height: 700px;
+    margin: 0rem auto;
+    margin-bottom: 1rem;
+    padding: 1rem;
+}
+
+.market-grid {
+    border: 1px solid;
+    height: 700px;
+    margin: 0 auto;
+}
+
+.marget-search {
+    background: gray;
+    min-height: 25px;
+    margin: 0rem;
+}

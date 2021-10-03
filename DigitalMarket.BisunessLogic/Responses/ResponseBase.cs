@@ -5,12 +5,12 @@ namespace DigitalMarket.BisunessLogic.Responses
     public record ResponseBase
     {
         public bool Success { get; init; }
-        public string Message { get; init; }
+        public string Code { get; init; }
 
         public static ResponseBase SuccessResponse => new()
         {
             Success = true,
-            Message = ResponseMessages.Success
+            Code = ResponseCodes.Success
         };
     }
 
@@ -19,13 +19,13 @@ namespace DigitalMarket.BisunessLogic.Responses
         public static new T SuccessResponse => new()
         {
             Success = true,
-            Message = ResponseMessages.Success
+            Code = ResponseCodes.Success
         };
 
         public static T FromError(string message) => new()
         {
             Success = false,
-            Message = message
+            Code = message
         };
     }
 }

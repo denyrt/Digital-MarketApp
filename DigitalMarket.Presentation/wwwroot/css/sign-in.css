@@ -27,9 +27,10 @@
 }
 
 .formContainer {
-    min-width: 625px;
-    min-height: 365px;
-    margin-top: 20%;
+    max-width: 625px;
+    max-height: 365px;
+    margin: 0 auto;
+    margin-top: 15%;
 }
 
 .p-r2 {
@@ -52,6 +53,16 @@
 .form-left-content {
     background: rgb(44,41,43);
     background: linear-gradient(rgba(44,41,43,1) 0%, rgba(75,96,104,1) 100%);
+}
+
+@media (max-width:450px) {
+    .form-left-content {
+        display: none
+    }
+
+    #formbefore::before {
+        position: relative
+    }
 }
 
 .linked-text {

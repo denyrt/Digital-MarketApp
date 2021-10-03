@@ -3,6 +3,7 @@
   "name": "asp.net",
   "private": true,
   "devDependencies": {
-    "@types/jquery": "3.3.33"
+    "@types/jquery": "3.3.33",
+    "rxjs": "7.3.1"
   }
 }
