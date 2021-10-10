@@ -14,7 +14,7 @@ namespace DigitalMarket.BisunessLogic.Queries.Items
             return new()
             {
                 Success = true,
-                Code = ResponseCodes.Success,
+                Code = ResponseCodes.Ok,
                 Item = digitalItem.ToItem()
             };
         }

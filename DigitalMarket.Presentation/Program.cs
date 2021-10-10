@@ -15,6 +15,14 @@ namespace DigitalMarket
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                    webBuilder.UseKestrel(options =>
+                    {
+                        options.ListenLocalhost(5000);
+                        options.ListenLocalhost(5001, builder =>
+                        {
+                            builder.UseHttps();
+                        });
+                    });
                 });
     }
 }

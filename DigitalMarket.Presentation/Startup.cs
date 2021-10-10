@@ -1,6 +1,7 @@
 #define USE_IN_MEMORY_DB
 using DigitalMarket.Data.Contexts;
-using DigitalMarket.Extensions;
+using DigitalMarket.Domain.Constants;
+using DigitalMarket.Presentation.Extensions.DependencyInjection;
 using DigitalMarket.Swagger;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -25,14 +26,15 @@ namespace DigitalMarket
         { 
             services.AddDbContext<DigitalMarketDbContext>(options => 
             {
-#if USE_IN_MEMORY_DB
+#if !USE_IN_MEMORY_DB
                 options.UseInMemoryDatabase("DigitalDb");
 #else
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                options.UseSqlServer(EnvironmentConstants.DbConnectionString);
 #endif
                 
             });
 
+            services.AddSession();
             services.AddDigitalMarket();
             services.AddSwaggerGen(gen => 
             {
@@ -63,12 +65,15 @@ namespace DigitalMarket
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
+            app.UseSession();
+            app.UseCookiePolicy();
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseRequestLocalization(app
                 .ApplicationServices
                 .GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
-
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

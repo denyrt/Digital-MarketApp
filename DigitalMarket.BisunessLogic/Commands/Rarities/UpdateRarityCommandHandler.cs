@@ -25,9 +25,9 @@ namespace DigitalMarket.BisunessLogic.Commands.Rarities
             }
 
             rarity.Name = request.Name;
-            _digitalMarketDbContext.Update(rarity);
+            var update = _digitalMarketDbContext.Update(rarity);
             await _digitalMarketDbContext.SaveChangesAsync(cancellationToken);
-            return UpdateRarityResponse.SuccessResponse;
+            return UpdateRarityResponse.FromSuccess(update.Entity);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using DigitalMarket.BisunessLogic.Commands.SignIn;
+﻿using DigitalMarket.BisunessLogic.Commands.Account;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;

@@ -1,4 +1,5 @@
-﻿using DigitalMarket.BisunessLogic.Queries.Items;
+﻿using DigitalMarket.BisunessLogic.Commands.Items;
+using DigitalMarket.BisunessLogic.Queries.Items;
 using DigitalMarket.Presentation.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -33,21 +34,24 @@ namespace DigitalMarket.Presentation.Controllers.Api
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateItem()
+        public async Task<IActionResult> CreateItem([FromBody] CreateItemCommand command)
         {
-            return Ok();
+            CreateItemResponse result = await _mediator.Send(command);
+            return result.ToActionResult();
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateItem()
+        public async Task<IActionResult> UpdateItem([FromBody] UpdateItemCommand command)
         {
-            return Ok();
+            UpdateItemResponse result = await _mediator.Send(command);
+            return result.ToActionResult();
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteItem()
+        public async Task<IActionResult> DeleteItem([FromBody] DeleteItemsCommand command)
         {
-            return Ok();
+            DeleteItemsResponse result = await _mediator.Send(command);
+            return result.ToActionResult();
         }
     }
 }

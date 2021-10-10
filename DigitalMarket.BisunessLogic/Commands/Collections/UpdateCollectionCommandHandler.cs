@@ -27,9 +27,9 @@ namespace DigitalMarket.BisunessLogic.Commands.Collections
             collection.Name = request.Name;
             collection.Description = request.Description;
 
-            _digitalMarketDbContext.DigitalCollections.Update(collection);
+            var update = _digitalMarketDbContext.DigitalCollections.Update(collection);
             await _digitalMarketDbContext.SaveChangesAsync(cancellationToken);
-            return UpdateCollectionResponse.SuccessResponse;
+            return UpdateCollectionResponse.FromSuccess(update.Entity);
         }
     }
 }

@@ -1,0 +1,42 @@
+﻿@using DigitalMarket.Data.Models
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<DigitalUser> SignInManager
+
+<ul class="navbar-nav">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <li class="nav-item">
+            <a class="nav-link text-light" 
+               title="Manage">
+            @User.Identity.Name
+            </a>
+        </li>
+        <li class="nav-item">
+            <form method="POST" class="form-inline" 
+                  asp-controller="Account"
+                  asp-action="Logout"
+                  asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button type="submit" class="nav-link btn btn-link text-light">Logout</button>
+            </form>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link text-light" 
+               asp-controller="Account"
+               asp-action="Registry"
+               >
+                Register
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-light" 
+               asp-controller="Account"
+               asp-action="Login"
+               >
+                Login
+            </a>
+        </li>
+    }
+</ul>

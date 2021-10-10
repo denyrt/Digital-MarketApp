@@ -10,8 +10,9 @@ namespace DigitalMarket.Presentation.Extensions
         {
             return responseBase.Code switch
             {
-                ResponseCodes.Success => new OkObjectResult(responseBase),
+                ResponseCodes.Ok => new OkObjectResult(responseBase),
                 ResponseCodes.NotFound => new NotFoundObjectResult(responseBase),
+                ResponseCodes.Conflict => new ConflictObjectResult(responseBase),
                 _ => new BadRequestObjectResult(responseBase)
             };
         }

@@ -1,0 +1,23 @@
+﻿@{
+    ViewData["Title"] = "Confirm Email";
+    bool emailConfirmed = ViewBag.Confirmed;
+}
+
+<div class="container">
+    <div class="text-center p-5">
+       @if (emailConfirmed)
+        {
+            <div>
+                <h4>Your email was success confirmed.</h4>
+            </div>
+        }
+        else
+        {
+           <div>
+               <h4>
+                   Email confirmation was failed.
+               </h4>
+           </div>
+        }
+    </div>
+</div>

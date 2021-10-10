@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -28,6 +28,7 @@
 
   <ItemGroup>
     <Folder Include="scripts\shared\" />
+    <Folder Include="Views\Account\Partial\" />
     <Folder Include="wwwroot\js\" />
   </ItemGroup>
 

@@ -10,7 +10,7 @@ namespace DigitalMarket.BisunessLogic.Responses
         public static ResponseBase SuccessResponse => new()
         {
             Success = true,
-            Code = ResponseCodes.Success
+            Code = ResponseCodes.Ok
         };
     }
 
@@ -19,7 +19,7 @@ namespace DigitalMarket.BisunessLogic.Responses
         public static new T SuccessResponse => new()
         {
             Success = true,
-            Code = ResponseCodes.Success
+            Code = ResponseCodes.Ok
         };
 
         public static T FromError(string message) => new()

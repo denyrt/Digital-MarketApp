@@ -14,7 +14,7 @@ namespace DigitalMarket.BisunessLogic.Commands.Collections
             return new()
             {
                 Success = true,
-                Code = ResponseCodes.Success,
+                Code = ResponseCodes.Ok,
                 Collection = digitalCollection.ToCollection()
             };
         }

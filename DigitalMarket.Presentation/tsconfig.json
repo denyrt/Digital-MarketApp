@@ -1,13 +1,14 @@
 {
   "compileOnSave": true,
   "compilerOptions": {
+    "moduleResolution": "Node",
     "noImplicitAny": false,
     "noEmitOnError": true,
     "removeComments": false,
     "sourceMap": true,
     "resolveJsonModule": true,
     "target": "es5",
-    "lib": ["ES2015", "DOM"],
+    "lib": [ "ES2015", "DOM" ],
     "outDir": "wwwroot/js",
     "types": [ "jquery" ]
   },

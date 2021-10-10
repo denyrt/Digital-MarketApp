@@ -24,7 +24,6 @@ namespace DigitalMarket.BisunessLogic.Commands.Rarities
 
             var create = await _digitalMarketDbContext.DigitalRarities.AddAsync(rarity, cancellationToken);
             await _digitalMarketDbContext.SaveChangesAsync(cancellationToken);
-
             return CreateRarityResponse.FromSuccess(create.Entity);
         }
     }

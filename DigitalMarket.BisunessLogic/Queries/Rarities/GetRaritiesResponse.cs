@@ -16,7 +16,7 @@ namespace DigitalMarket.BisunessLogic.Queries.Rarities
             return new()
             {
                 Success = true,
-                Code = ResponseCodes.Success,
+                Code = ResponseCodes.Ok,
                 Rarities = rarities.Select(digitalRarity => digitalRarity.ToRarity()).ToArray()
             };
         }
