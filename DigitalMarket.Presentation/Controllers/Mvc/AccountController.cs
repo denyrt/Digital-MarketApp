@@ -48,7 +48,8 @@ namespace DigitalMarket.Controllers
 
             if (response.Code == ResponseCodes.EmailNotConfirmed)
             {
-                return RedirectToAction(nameof(WaitForEmailConfirmation));
+                ViewBag.RequiresEmailConfirmation = true;
+                return View();
             }
 
 
@@ -79,7 +80,8 @@ namespace DigitalMarket.Controllers
 
             if (response.Success)
             {
-                return RedirectToAction(nameof(WaitForEmailConfirmation));
+                ViewBag.RequiresEmailConfirmation = true;
+                return View();
             }
 
             IStringLocalizer localizer = _stringLocalizerFactory.Create("Models.RegisterModel", GetType().Assembly.FullName);
@@ -114,11 +116,6 @@ namespace DigitalMarket.Controllers
             return View(registerModel);
         }
 
-        [HttpGet("WaitForEmailConfirmation")]
-        public IActionResult WaitForEmailConfirmation()
-        {
-            return View();
-        }
 
         [HttpGet("ConfirmEmail")]
         public async Task<IActionResult> ConfirmEmail([FromQuery] string username, [FromQuery] string token)
@@ -149,7 +146,7 @@ namespace DigitalMarket.Controllers
             }
 
             ViewBag.EmailSent = await _mediator.Send(forgotPasswordModel.ToCommand());
-            return View();
+            return View(forgotPasswordModel);
         }
 
         [HttpGet("ResetPassword")]
@@ -162,6 +159,11 @@ namespace DigitalMarket.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ResetPassword([FromForm] ResetPasswordViewModel resetPasswordModel)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(resetPasswordModel);
+            }
+
             ResetPasswordResponse resetPassword = await _mediator.Send(resetPasswordModel.ToCommand());
 
             if (resetPassword.Success)

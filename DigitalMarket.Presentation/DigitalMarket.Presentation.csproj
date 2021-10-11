@@ -28,7 +28,6 @@
 
   <ItemGroup>
     <Folder Include="scripts\shared\" />
-    <Folder Include="Views\Account\Partial\" />
     <Folder Include="wwwroot\js\" />
   </ItemGroup>
 

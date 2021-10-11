@@ -1,96 +1,17 @@
 ﻿@model DigitalMarket.Presentation.Models.Account.LoginViewModel;
-@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer;
 @{
     ViewData["Title"] = "Sign-In";
+    bool? requiresEmailConfirmation = ViewBag.RequiresEmailConfirmation;
 }
 
 <link rel="stylesheet" href="~/css/sign-in.css" />
 <script src="~/js/sign-in/login.js"></script>
 
-<form method="POST" id="form" 
-      asp-controller="Account" 
-      asp-action="Login" 
-      class="col-xl-7 col-lg-6 col-md-8 col-sm-10 mx-auto text-center form">
-    <div class="row ml-1 formContainer">
-        <div class="col-4 pt-4 container form-left-content">
-            <label class="h4 text-light">Digital MarketApp</label>
-            <div class="w-100"></div>
-            <label class="text-light">@localizer["LeftDescription"]</label>
-            <div class="w-100"></div>
-            <div class="">
-                <div class="">
-                </div>
-            </div>
-        </div>
-        <div class="col p-4">
-            <p class="h4 mb-4 p-r2 text">@localizer["LoginTitle"]</p>
-
-            <div class="form-group p-1">
-                <label for="login"
-                       class="float-left text">
-                    @localizer["UsernamePlaceholder"]
-                </label>
-                <input id="username"
-                       name="username"
-                       type="text"
-                       formControlName="username"
-                       class="form-control"
-                       aria-describedby="usernameHelp"
-                       placeholder="@localizer["UsernamePlaceholder"]"
-                       value="@Model?.Username">
-                <small id="usernameHelp"
-                       class="form-text text-danger small-left">
-                    @Html.ValidationMessageFor(x => x.Username)
-                </small>
-            </div>
-
-            <div class="form-group p-1">
-                <label for="password"
-                       class="float-left text">
-                    @localizer["PasswordPlaceholder"]
-                </label>
-                <input id="password"
-                       name="password"
-                       type="password"
-                       formControlName="password"
-                       class="form-control"
-                       aria-describedby="passwordHelp"
-                       placeholder="@localizer["PasswordPlaceholder"]">
-                <small id="passwordHelp"
-                       class="form-text text-danger small-left">
-                    @Html.ValidationMessageFor(x => x.Password)
-                </small>
-            </div>
-            <div class="form-group p-1">
-                <div class="form-check float-left">
-                    <input class="form-check-input"
-                           id="rememberMe"
-                           type="checkbox"
-                           name="rememberMe"
-                           value="@Model.RememberMe.ToString()">
-                    <label class="form-check-label" for="rememberMe">
-                        @localizer["RememberMe"]
-                    </label>
-                </div>
-            </div>
-            <div class="form-group p-2">
-                <button id="submit"
-                        type="submit"
-                        class="btn btn-success w-50">
-                    @localizer["LoginButton"]
-                </button>
-                <div class="w-100"></div>
-                <a asp-controller="Account"
-                   asp-action="ForgotPassword"
-                   class="linked-text">
-                    @localizer["ForgotPasswordLink"]
-                </a>
-                <a asp-controller="Account"
-                   asp-action="Registry"
-                   class="linked-text">
-                    @localizer["RegistryLink"]
-                </a>
-            </div>
-        </div>
-    </div>
-</form>
+@if (requiresEmailConfirmation == true)
+{
+    <partial name="Partial/RequiresEmailConfirmation" />
+}
+else
+{
+    <partial name="Partial/LoginForm" model="@Model"/>
+}

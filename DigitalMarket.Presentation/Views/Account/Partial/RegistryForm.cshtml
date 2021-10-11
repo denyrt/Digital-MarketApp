@@ -1,0 +1,109 @@
+﻿@model DigitalMarket.Presentation.Models.Account.RegisterViewModel;
+@*@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer;*@
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-5">
+            <div class="container pt-2">
+                <h4>Register</h4>
+                <hr class="mt-2 mb-3" />
+                <p>Join to our community.</p>
+                <hr class="mt-2 mb-3" />
+            </div>
+
+            <div class="container">
+                <form id="form" method="POST" asp-controller="Account" asp-action="Registry">
+                    <div class="row">
+                        <div class="form-group col">
+                            <label for="login" class="text">
+                                Username
+                            </label>
+                            <input type="text"
+                                   name="username"
+                                   formControlName="username"
+                                   class="form-control form-control-sm"
+                                   placeholder="Username"
+                                   aria-describedby="usernameHelp"
+                                   value="@Model?.Username">
+                            <small id="usernameHelp"
+                                   class="form-text text-danger small-left">
+                                @Html.ValidationMessageFor(x => x.Username)
+                            </small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col">
+                            <label for="login" class="text">
+                                Email
+                            </label>
+                            <input type="email"
+                                   name="email"
+                                   formControlName="email"
+                                   class="form-control form-control-sm"
+                                   placeholder="example@@email.com"
+                                   aria-describedby="emailHelp"
+                                   value="@Model?.Email">
+                            <small id="emailHelp"
+                                   class="form-text text-danger small-left">
+                                @Html.ValidationMessageFor(x => x.Email)
+                            </small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col">
+                            <label for="password" class="text">
+                                Password
+                            </label>
+                            <input type="password"
+                                   name="password"
+                                   formControlName="password"
+                                   class="form-control form-control-sm"
+                                   placeholder="Password"
+                                   aria-describedby="passwordHelp"
+                                   value="@Model?.Password">
+                            <small id="passwordHelp"
+                                   class="form-text text-danger small-left">
+                                @Html.ValidationMessageFor(x => x.Password)
+                            </small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col">
+                            <label for="password" class="text">
+                                Confirm Password
+                            </label>
+                            <input type="password"
+                                   name="confirmPassword"
+                                   formControlName="confirmPassword"
+                                   class="form-control form-control-sm"
+                                   placeholder="Repeat your password here"
+                                   aria-describedby="confirmPasswordHelp"
+                                   value="@Model?.ConfirmPassword">
+                            <small id="confirmPasswordHelp"
+                                   class="form-text text-danger small-left">
+                                @Html.ValidationMessageFor(x => x.ConfirmPassword)
+                            </small>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group text-center col">
+                            <button type="submit" class="btn btn-success w-100">
+                                Registry
+                            </button>
+                            <div class="w-100"></div>
+                            <a class="linked-text"
+                               asp-controller="Account"
+                               asp-action="ForgotPassword">
+                                Forgot password?
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col">
+            
+        </div>
+    </div>
+</div>

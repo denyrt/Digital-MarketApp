@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     var username = document.getElementById('username');
     var usernameHelp = document.getElementById('usernameHelp');
-    console.log(username);
     username.addEventListener('focus', function () {
         if (usernameHelp)
             usernameHelp.innerHTML = '';

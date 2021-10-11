@@ -1,0 +1,78 @@
+﻿@model DigitalMarket.Presentation.Models.Account.LoginViewModel;
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer;
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-5">
+            <div class="container pt-2">
+                <h4>Login</h4>
+                <hr class="mt-2 mb-3" />
+            </div>
+
+            <div class="container">
+                <form id="form" method="POST" asp-controller="Account" asp-action="Login">
+                    <div class="row">
+                        <div class="form-group col">
+                            <label for="login" class="text">
+                                Username
+                            </label>
+                            <input type="text"
+                                   name="username"
+                                   formControlName="username"
+                                   class="form-control form-control-sm"
+                                   placeholder="Username"
+                                   aria-describedby="usernameHelp"
+                                   value="@Model?.Username">
+                            <small id="usernameHelp"
+                                   class="form-text text-danger small-left">
+                                @Html.ValidationMessageFor(x => x.Username)
+                            </small>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col">
+                            <label for="password" class="text">
+                                Password
+                            </label>
+                            <input type="password"
+                                   name="password"
+                                   formControlName="password"
+                                   class="form-control form-control-sm"
+                                   placeholder="Password"
+                                   aria-describedby="passwordHelp"
+                                   value="@Model?.Password">
+                            <small id="passwordHelp"
+                                   class="form-text text-danger small-left">
+                                @Html.ValidationMessageFor(x => x.Password)
+                            </small>
+                        </div>
+                    </div> 
+
+                    <div class="row">
+                        <div class="form-group text-center col">
+                            <button id="submit"
+                                    type="submit"
+                                    class="btn btn-success w-50">
+                                @localizer["LoginButton"]
+                            </button>
+                            <div class="w-100"></div>
+                            <a asp-controller="Account"
+                               asp-action="ForgotPassword"
+                               class="linked-text">
+                                @localizer["ForgotPasswordLink"]
+                            </a>
+                            <a asp-controller="Account"
+                               asp-action="Registry"
+                               class="linked-text">
+                                @localizer["RegistryLink"]
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col">
+
+        </div>
+    </div>
+</div>
