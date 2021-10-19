@@ -25,15 +25,26 @@ namespace DigitalMarket.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("AvailableAtMarket")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
 
                     b.HasKey("Id");
 
@@ -46,6 +57,9 @@ namespace DigitalMarket.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("CreateDateUtc")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(500)
@@ -56,6 +70,12 @@ namespace DigitalMarket.Data.Migrations
 
                     b.Property<Guid>("DigitalRarityId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<double>("DropChance")
+                        .HasColumnType("float");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MarketName")
                         .IsRequired()
@@ -106,6 +126,33 @@ namespace DigitalMarket.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("DigitalRarities");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("710bb39a-f836-4999-b509-99676ffc36dd"),
+                            Name = "Common"
+                        },
+                        new
+                        {
+                            Id = new Guid("ff8be82e-97e1-4543-a37f-b4e857deb6b2"),
+                            Name = "Rare"
+                        },
+                        new
+                        {
+                            Id = new Guid("4b15b9b2-c742-4860-acf4-08b5fb9e2a19"),
+                            Name = "Super Rare"
+                        },
+                        new
+                        {
+                            Id = new Guid("8a86db3c-2c1f-4028-8b9d-9e6a4dba12c9"),
+                            Name = "Epic"
+                        },
+                        new
+                        {
+                            Id = new Guid("5cf32c72-960a-4367-852a-8b3388be1e85"),
+                            Name = "Legendary"
+                        });
                 });
 
             modelBuilder.Entity("DigitalMarket.Data.Models.DigitalRole", b =>
@@ -134,6 +181,77 @@ namespace DigitalMarket.Data.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("3ff4ea20-1adb-4141-a296-7b5ec330d144"),
+                            ConcurrencyStamp = "a5544add-900f-4893-886d-ece723901a4e",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = new Guid("33802147-520f-4178-84f1-6ae66243b45e"),
+                            ConcurrencyStamp = "bf55ce82-0601-4c0e-b3ce-ca689527854a",
+                            Name = "User",
+                            NormalizedName = "USER"
+                        });
+                });
+
+            modelBuilder.Entity("DigitalMarket.Data.Models.DigitalSellOffer", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreateDateUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("InstanceId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InstanceId")
+                        .IsUnique();
+
+                    b.ToTable("DigitalSellOffers");
+                });
+
+            modelBuilder.Entity("DigitalMarket.Data.Models.DigitalTransaction", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreateTimeUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("FromUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("InstanceId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
+                    b.Property<Guid>("ToUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FromUserId");
+
+                    b.HasIndex("InstanceId");
+
+                    b.HasIndex("ToUserId");
+
+                    b.ToTable("DigitalTransactions");
                 });
 
             modelBuilder.Entity("DigitalMarket.Data.Models.DigitalUser", b =>
@@ -144,6 +262,9 @@ namespace DigitalMarket.Data.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
+
+                    b.Property<double>("Balance")
+                        .HasColumnType("float");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -308,14 +429,12 @@ namespace DigitalMarket.Data.Migrations
                     b.HasOne("DigitalMarket.Data.Models.DigitalCollection", "DigitalCollection")
                         .WithMany("DigitalItems")
                         .HasForeignKey("DigitalCollectionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("DigitalMarket.Data.Models.DigitalRarity", "DigitalRarity")
                         .WithMany("DigitalItems")
                         .HasForeignKey("DigitalRarityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("DigitalCollection");
 
@@ -327,18 +446,51 @@ namespace DigitalMarket.Data.Migrations
                     b.HasOne("DigitalMarket.Data.Models.DigitalItem", "DigitalItem")
                         .WithMany("ItemInstances")
                         .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("DigitalMarket.Data.Models.DigitalUser", "Owner")
                         .WithMany("ItemInstances")
                         .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("DigitalItem");
 
                     b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("DigitalMarket.Data.Models.DigitalSellOffer", b =>
+                {
+                    b.HasOne("DigitalMarket.Data.Models.DigitalItemInstance", "ItemInstance")
+                        .WithOne("DigitalSellOffer")
+                        .HasForeignKey("DigitalMarket.Data.Models.DigitalSellOffer", "InstanceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ItemInstance");
+                });
+
+            modelBuilder.Entity("DigitalMarket.Data.Models.DigitalTransaction", b =>
+                {
+                    b.HasOne("DigitalMarket.Data.Models.DigitalUser", "FromUser")
+                        .WithMany("OutputTransactions")
+                        .HasForeignKey("FromUserId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("DigitalMarket.Data.Models.DigitalItemInstance", "ItemInstance")
+                        .WithMany("Transactions")
+                        .HasForeignKey("InstanceId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("DigitalMarket.Data.Models.DigitalUser", "ToUser")
+                        .WithMany("InputTransactions")
+                        .HasForeignKey("ToUserId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("FromUser");
+
+                    b.Navigation("ItemInstance");
+
+                    b.Navigation("ToUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -402,6 +554,13 @@ namespace DigitalMarket.Data.Migrations
                     b.Navigation("ItemInstances");
                 });
 
+            modelBuilder.Entity("DigitalMarket.Data.Models.DigitalItemInstance", b =>
+                {
+                    b.Navigation("DigitalSellOffer");
+
+                    b.Navigation("Transactions");
+                });
+
             modelBuilder.Entity("DigitalMarket.Data.Models.DigitalRarity", b =>
                 {
                     b.Navigation("DigitalItems");
@@ -409,7 +568,11 @@ namespace DigitalMarket.Data.Migrations
 
             modelBuilder.Entity("DigitalMarket.Data.Models.DigitalUser", b =>
                 {
+                    b.Navigation("InputTransactions");
+
                     b.Navigation("ItemInstances");
+
+                    b.Navigation("OutputTransactions");
                 });
 #pragma warning restore 612, 618
         }

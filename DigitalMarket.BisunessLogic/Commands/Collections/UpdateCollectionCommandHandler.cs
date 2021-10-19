@@ -25,6 +25,8 @@ namespace DigitalMarket.BisunessLogic.Commands.Collections
             }
 
             collection.Name = request.Name;
+            collection.ImageUrl = request.ImageUrl;
+            collection.Price = request.Price;
             collection.Description = request.Description;
 
             var update = _digitalMarketDbContext.DigitalCollections.Update(collection);

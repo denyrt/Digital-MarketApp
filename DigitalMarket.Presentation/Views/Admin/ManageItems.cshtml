@@ -1,0 +1,98 @@
+﻿@using DigitalMarket.BisunessLogic.Models;
+@model DigitalMarket.Presentation.Models.Admin.ManageItemsViewModel;
+@{
+    ViewData["Title"] = "Manage Items";
+    IEnumerable<Collection> collections = ViewBag.Collections ?? Enumerable.Empty<Collection>();
+}
+
+<script type="module" src="~/js/admin/items/manage-items.js"></script>
+
+<div class="container">
+    <div class="row">
+        <div class="col pt-2">
+            <h4>@ViewData["Title"]</h4>
+            <hr class="mt-2 mb-3" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <div class="pt-2 pb-2">
+                <select id="collectionFilter" class="form-control form-select" aria-label="">
+                    <option selected value="null">All collections</option>
+                    @foreach (var collection in collections)
+                    {
+                        <option value="@collection.Id">@collection.Name</option>
+                    }
+                </select>
+                
+            </div>
+        </div>
+        <div class="col">
+            <div class="pt-2 pb-2">
+                <a class="btn btn-primary" asp-controller="Admin" asp-action="CreateItem">
+                    Create Item
+                </a>
+                <button id="deleteSelected" class="btn btn-danger">
+                    Delete Selected
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <table id="table" class="table">
+                <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Collection</th>
+                        <th scope="col">Rarity</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Items)
+                    {
+                        <tr data="@item.Id">
+                            <td>
+                                <input value="@item.Id" type="checkbox" class="form-check-input" />
+                            </td>
+                            <td>
+                                <a asp-controller="Admin" asp-action="Item" asp-route-id="@item.Id">
+                                    @item.MarketName
+                                </a>
+                            </td>
+                            <td>
+                                <label>
+                                    @item.Collection.Name
+                                </label>
+                            </td>
+                            <td>@item.Rarity.Name</td>
+                            <td>
+                                <div>
+                                    <div class="dropdown">
+                                        <button class="btn btn-primary dropdown-toggle"
+                                                type="button"
+                                                data-toggle="dropdown"
+                                                aria-haspopup="true"
+                                                aria-expanded="false">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                                                <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
+                                            </svg>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" asp-controller="Admin" asp-action="EditItem" asp-route-id="@item.Id">Edit</a>
+                                            <button class="dropdown-item delete">Delete</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

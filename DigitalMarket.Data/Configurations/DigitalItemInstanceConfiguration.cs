@@ -14,13 +14,15 @@ namespace DigitalMarket.Data.Configurations
                 .HasOne(x => x.DigitalItem)
                 .WithMany(item => item.ItemInstances)
                 .HasForeignKey(x => x.ItemId)
-                .IsRequired();
+                .OnDelete(DeleteBehavior.NoAction)
+                .IsRequired(false);
 
             builder
                 .HasOne(x => x.Owner)
                 .WithMany(user => user.ItemInstances)
                 .HasForeignKey(x => x.OwnerId)
-                .IsRequired();
+                .OnDelete(DeleteBehavior.NoAction)
+                .IsRequired(false);
         }
     }
 }

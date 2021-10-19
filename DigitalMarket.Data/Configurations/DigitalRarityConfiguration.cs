@@ -1,6 +1,7 @@
 ﻿using DigitalMarket.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 
 namespace DigitalMarket.Data.Configurations
 {
@@ -13,7 +14,42 @@ namespace DigitalMarket.Data.Configurations
             builder
                 .HasMany(rarity => rarity.DigitalItems)
                 .WithOne(item => item.DigitalRarity)
-                .HasForeignKey(item => item.DigitalRarityId);
+                .HasForeignKey(item => item.DigitalRarityId)
+                .OnDelete(DeleteBehavior.NoAction)
+                .IsRequired(false);
+
+            builder.HasData(new DigitalRarity[]
+            {
+                new()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Common"
+                },
+
+                new()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Rare"
+                },
+
+                new()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Super Rare"
+                },
+
+                new()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Epic"
+                },
+
+                new()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Legendary"
+                }
+            });
         }
     }
 }

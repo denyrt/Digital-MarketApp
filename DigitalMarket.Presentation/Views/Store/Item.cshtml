@@ -1,0 +1,50 @@
+﻿@model DigitalMarket.BisunessLogic.Models.Item;
+@{
+    ViewData["Title"] = Model?.MarketName ?? string.Empty;
+}
+
+<div class="container pt-5">
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="col">
+                <img style="max-width: 500px" src="@Model?.ImageUrl" />
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="pl-5 pt-3">
+                <div class="row">
+                    <div class="col">
+                        <h4 class="text">@Model?.MarketName</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="pt-2 pb-2">
+                            <h4>
+                                <a class="badge badge-primary" asp-controller="Store" asp-action="Collection" asp-route-id="@Model.Collection.Id">
+                                    @Model?.Collection?.Name
+                                </a>
+                            </h4>
+                            <h4><span class="badge badge-warning">@Model?.Rarity?.Name</span></h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col pb-2">
+                        <div class="overflow-auto" style="max-height: 300px">
+                            <p>@Model?.Description</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col pt-3">
+                        <button class="btn btn-warning w-100">
+                            Show at marketplace
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,7 +1,10 @@
-﻿using DigitalMarket.BisunessLogic.Commands.Collections;
+﻿using DigitalMarket.BisunessLogic.ApiCommands.Collections;
+using DigitalMarket.BisunessLogic.ApiQueries.Collections;
+using DigitalMarket.BisunessLogic.Commands.Collections;
 using DigitalMarket.BisunessLogic.Queries.Collections;
 using DigitalMarket.Presentation.Extensions;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -10,6 +13,7 @@ namespace DigitalMarket.Presentation.Controllers.Api
 {
     [Route("api/collections")]
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class CollectionsApiController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -22,14 +26,18 @@ namespace DigitalMarket.Presentation.Controllers.Api
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCollection([FromRoute] Guid id)
         {
-            GetCollectionResponse result = await _mediator.Send(new GetCollectionQuery { Id = id });
+            GetCollectionApiResponse result = await _mediator.Send(new GetCollectionApiQuery { Id = id });
             return result.ToActionResult();
         }
 
         [HttpGet]
         public async Task<IActionResult> GetCollections()
         {
-            GetCollectionsResponse result = await _mediator.Send(new GetCollectionsQuery());
+            var query = new GetCollectionsQuery
+            {
+                OnlyAvailable = false
+            };
+            GetCollectionsResponse result = await _mediator.Send(query);
             return result.ToActionResult();
         }
 
@@ -51,6 +59,13 @@ namespace DigitalMarket.Presentation.Controllers.Api
         public async Task<IActionResult> DeleteCollections([FromBody] DeleteCollectionsCommand command)
         {
             DeleteCollectionsResponse result = await _mediator.Send(command);
+            return result.ToActionResult();
+        }
+
+        [HttpPost("ChangeAvailable")]
+        public async Task<IActionResult> ChangeAvailable([FromBody] ChangeAvailableCommand command)
+        {
+            ChangeAvailableResponse result = await _mediator.Send(command);
             return result.ToActionResult();
         }
     }

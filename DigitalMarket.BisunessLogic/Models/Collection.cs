@@ -7,6 +7,9 @@ namespace DigitalMarket.BisunessLogic.Models
     {
         public Guid Id { get; init; }
         public string Name { get; init; }
+        public string Image { get; init; }
+        public double Price { get; init; }
+        public bool Available { get; init; }
         public string Description { get; init; }
     }
 
@@ -16,6 +19,9 @@ namespace DigitalMarket.BisunessLogic.Models
         {
             Id = digitalCollection.Id,
             Name = digitalCollection.Name,
+            Image = digitalCollection.ImageUrl,
+            Price = digitalCollection.Price,
+            Available = digitalCollection.AvailableAtMarket,
             Description = digitalCollection.Description
         };
     }

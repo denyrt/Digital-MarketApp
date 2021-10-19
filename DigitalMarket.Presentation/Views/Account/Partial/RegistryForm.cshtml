@@ -1,5 +1,8 @@
 ﻿@model DigitalMarket.Presentation.Models.Account.RegisterViewModel;
 @*@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer;*@
+@{ 
+    bool registryFailed = ViewBag.RegistryFailed == true;
+}
 
 <div class="container">
     <div class="row">
@@ -85,6 +88,17 @@
                             </small>
                         </div>
                     </div>
+
+                    @if (registryFailed)
+                    {
+                        <div class="row">
+                            <div class="col">
+                                <div class="alert alert-danger" role="alert">
+                                    Registry failed.
+                                </div>
+                            </div>
+                        </div>
+                    }
 
                     <div class="row">
                         <div class="form-group text-center col">

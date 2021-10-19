@@ -8,6 +8,8 @@ namespace DigitalMarket.BisunessLogic.Models
         public Guid Id { get; init; }
         public string MarketName { get; init; }
         public string Description { get; init; }
+        public string ImageUrl { get; init; }
+        public double DropChance { get; init; }
         public Collection Collection { get; init; }
         public Rarity Rarity { get; init; }
     }
@@ -18,9 +20,11 @@ namespace DigitalMarket.BisunessLogic.Models
         {
             Id = digitalItem.Id,
             MarketName = digitalItem.MarketName,
-            Description = digitalItem.Description,
-            Collection = digitalItem.DigitalCollection.ToCollection(),
-            Rarity = digitalItem.DigitalRarity.ToRarity()
+            Description = digitalItem.Description.Trim(),
+            ImageUrl = digitalItem.ImageUrl,
+            DropChance = digitalItem.DropChance,
+            Collection = digitalItem?.DigitalCollection?.ToCollection(),
+            Rarity = digitalItem?.DigitalRarity?.ToRarity()
         };
     }
 }

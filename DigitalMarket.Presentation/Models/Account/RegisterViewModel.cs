@@ -1,4 +1,5 @@
 ﻿using DigitalMarket.BisunessLogic.Commands.Account;
+using DigitalMarket.Data.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace DigitalMarket.Presentation.Models.Account
@@ -31,6 +32,15 @@ namespace DigitalMarket.Presentation.Models.Account
                 Username = registerModel.Username,
                 Email = registerModel.Email,
                 Password = registerModel.Password
+            };
+        }
+
+        public static DigitalUser ToDigitalUser(this RegisterViewModel registerViewModel)
+        {
+            return new()
+            {
+                UserName = registerViewModel.Username,
+                Email = registerViewModel.Email
             };
         }
     }

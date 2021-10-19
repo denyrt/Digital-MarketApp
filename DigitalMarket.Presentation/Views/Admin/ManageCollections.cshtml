@@ -1,0 +1,72 @@
+﻿@model DigitalMarket.Presentation.Models.Admin.ManageCollectionsViewModel;
+@{
+    ViewData["Title"] = "Manage Collections";
+}
+
+<script type="module" src="~/js/admin/collections/manage-collections.js"></script>
+
+<div class="container">
+    <div class="row">
+        <div class="col pt-2">
+            <h4>@ViewData["Title"]</h4>
+            <hr class="mt-2 mb-3" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <table id="table" class="table">
+                <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Placed at Store</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var collection in Model.Collections)
+                    {
+                    <tr data="@collection.Id">
+                        <td>
+                            <input value="@collection.Id" type="checkbox" class="form-check-input" />
+                        </td>
+                        <td>
+                            <a asp-controller="Admin" asp-action="Collection" asp-route-id="@collection.Id">
+                                @collection.Name
+                            </a>
+                        </td>
+                        <td>
+                            <input class="checkbox" type="checkbox" disabled="disabled" @(collection.Available ? "checked" : "")>
+                        </td>
+                        <td>@collection.Price</td>
+                        <td>
+                            <div>
+                                <div class="dropdown">
+                                    <button class="btn btn-primary dropdown-toggle"
+                                            type="button"
+                                            data-toggle="dropdown"
+                                            aria-haspopup="true"
+                                            aria-expanded="false">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                                            <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
+                                        </svg>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <button class="dropdown-item place-at-store">Place at store</button>
+                                        <button class="dropdown-item remove-from-store">Remove from store</button>
+                                        <hr />
+                                        <a class="dropdown-item" asp-controller="Admin" asp-action="EditCollection" asp-route-id="@collection.Id">Edit</a>
+                                        <button class="dropdown-item delete">Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

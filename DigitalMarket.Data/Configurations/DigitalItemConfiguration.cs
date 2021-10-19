@@ -9,26 +9,32 @@ namespace DigitalMarket.Data.Configurations
         public void Configure(EntityTypeBuilder<DigitalItem> builder)
         {
             builder.HasKey(x => x.Id);
+            builder.Property(x => x.ImageUrl).IsRequired(false);
             builder.Property(x => x.MarketName).HasMaxLength(100).IsRequired();
             builder.Property(x => x.Description).HasMaxLength(500).IsRequired();
+            builder.Property(x => x.DropChance).IsRequired();
+            builder.Property(x => x.CreateDateUtc).IsRequired();
 
             builder
                 .HasOne(item => item.DigitalCollection)
                 .WithMany(collection => collection.DigitalItems)
                 .HasForeignKey(item => item.DigitalCollectionId)
-                .IsRequired();
+                .OnDelete(DeleteBehavior.NoAction)
+                .IsRequired(false);
 
             builder
                 .HasOne(item => item.DigitalRarity)
                 .WithMany(rarity => rarity.DigitalItems)
                 .HasForeignKey(item => item.DigitalRarityId)
-                .IsRequired();
+                .OnDelete(DeleteBehavior.NoAction)
+                .IsRequired(false);
 
             builder
                 .HasMany(item => item.ItemInstances)
                 .WithOne(instance => instance.DigitalItem)
                 .HasForeignKey(instance => instance.ItemId)
-                .IsRequired();                
+                .OnDelete(DeleteBehavior.NoAction)
+                .IsRequired(false);                
         }
     }
 }

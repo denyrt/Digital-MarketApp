@@ -20,7 +20,10 @@ namespace DigitalMarket.BisunessLogic.Commands.Collections
             var collection = new DigitalCollection
             {
                 Name = request.Name,
-                Description = request.Description
+                Description = request.Description,
+                AvailableAtMarket = request.Available,
+                Price = request.Price,
+                ImageUrl = request.ImageUrl
             };
 
             var create = await _digitalMarketDbContext.DigitalCollections.AddAsync(collection, cancellationToken);

@@ -40,8 +40,10 @@ namespace DigitalMarket.BisunessLogic.Commands.Items
 
             item.MarketName = request.MarketName;
             item.Description = request.Description;
+            item.ImageUrl = request.ImageUrl;
             item.DigitalRarityId = request.RarityId;
             item.DigitalCollectionId = request.CollectionId;
+            item.DropChance = request.DropChance;
             var update = _digitalMarketDbContext.Update(item);
 
             await _digitalMarketDbContext.SaveChangesAsync(cancellationToken);

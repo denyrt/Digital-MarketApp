@@ -35,6 +35,8 @@ namespace DigitalMarket.BisunessLogic.Commands.Items
             var item = new DigitalItem
             {
                 MarketName = request.MarketName,
+                ImageUrl = request.ImageUrl,
+                DropChance = request.DropChance,
                 Description = request.Description,
                 DigitalRarityId = request.RarityId,
                 DigitalCollectionId = request.CollectionId

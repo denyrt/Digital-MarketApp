@@ -1,21 +1,35 @@
 ﻿@using DigitalMarket.Data.Models
 @using Microsoft.AspNetCore.Identity
-@inject SignInManager<DigitalUser> SignInManager
+@inject SignInManager<DigitalUser> SignInManager;
+@{ 
+    double balance = 0d;
+    if (SignInManager.IsSignedIn(User))
+    {
+        var user = await SignInManager.UserManager.FindByNameAsync(User.Identity.Name);
+        balance = user.Balance;
+    }
+}
 
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
         <li class="nav-item">
-            <a class="nav-link text-light" 
-               title="Manage">
-            @User.Identity.Name
+            <a class="nav-link text-light font-weight-bold"
+               title="Account"
+               asp-controller="Account"
+               asp-action="Me">
+                @User.Identity.Name
+            </a>
+        </li>
+        <li>
+            <a href="#" class="nav-link text-light fond-weight-bold">
+                @balance$
             </a>
         </li>
         <li class="nav-item">
             <form method="POST" class="form-inline" 
                   asp-controller="Account"
-                  asp-action="Logout"
-                  asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                  asp-action="Logout">
                 <button type="submit" class="nav-link btn btn-link text-light">Logout</button>
             </form>
         </li>

@@ -1,5 +1,11 @@
 ﻿@model DigitalMarket.Presentation.Models.Account.LoginViewModel;
 @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer localizer;
+@{ 
+    bool invalidCredentials = ViewBag.InvalidCredentials == true;
+    Context.Request.Query.TryGetValue("returnUrl", out var returnUrl);
+}
+
+<script src="~/js/sign-in/login.js"></script>
 
 <div class="container">
     <div class="row">
@@ -10,13 +16,14 @@
             </div>
 
             <div class="container">
-                <form id="form" method="POST" asp-controller="Account" asp-action="Login">
+                <form id="form" method="POST" asp-controller="Account" asp-action="Login" asp-route-returnUrl="@returnUrl">
                     <div class="row">
                         <div class="form-group col">
                             <label for="login" class="text">
                                 Username
                             </label>
-                            <input type="text"
+                            <input id="username"
+                                   type="text"
                                    name="username"
                                    formControlName="username"
                                    class="form-control form-control-sm"
@@ -34,7 +41,8 @@
                             <label for="password" class="text">
                                 Password
                             </label>
-                            <input type="password"
+                            <input id="password"
+                                   type="password"
                                    name="password"
                                    formControlName="password"
                                    class="form-control form-control-sm"
@@ -46,7 +54,33 @@
                                 @Html.ValidationMessageFor(x => x.Password)
                             </small>
                         </div>
-                    </div> 
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col">
+                            <div class="form-check">
+                                <input id="rememberMe"
+                                       class="form-check-input"
+                                       name="rememberMe"
+                                       type="checkbox"
+                                       value="@Model.RememberMe.ToString()">
+                                <label class="form-check-label" for="rememberMe">
+                                    Remember Me
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    @if (invalidCredentials)
+                    {
+                        <div class="row">
+                            <div class="form-group col">
+                                <div class="alert alert-danger" role="alert">
+                                    @localizer["InvalidCredentials"]
+                                </div>
+                            </div>
+                        </div>
+                    }
 
                     <div class="row">
                         <div class="form-group text-center col">

@@ -27,8 +27,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="scripts\shared\" />
     <Folder Include="wwwroot\js\" />
+    <Folder Include="wwwroot\static\collections\" />
   </ItemGroup>
 
 </Project>

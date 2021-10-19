@@ -32,7 +32,7 @@ namespace DigitalMarket.BisunessLogic.Commands.Email
             }
 
             string token = await _aspNetUserManager.GeneratePasswordResetTokenAsync(user);
-            string resetPasswordUrl = string.Format("{0}/Sign-In/ResetPassword?email={1}&token={2}",
+            string resetPasswordUrl = string.Format("{0}/Account/ResetPassword?email={1}&token={2}",
                 EnvironmentConstants.BackendHost,
                 Uri.EscapeDataString(user.Email),
                 Uri.EscapeDataString(token));

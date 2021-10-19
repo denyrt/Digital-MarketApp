@@ -93,3 +93,11 @@ body {
 .hidden {
     display: none;
 }
+
+bg-orange {
+    background: orange;
+}
+
+bg-purple {
+    background: purple;
+}

@@ -1,0 +1,133 @@
+﻿@model DigitalMarket.Presentation.Models.Admin.CreateCollectionViewModel;
+@{
+    ViewData["Title"] = "Create Collection";
+    bool failed = ViewBag.Failed == true;
+    string code = ViewBag.Code;
+}
+
+<script src="~/js/admin/collections/create-collection.js"></script>
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="container pt-2">
+                <h4>@ViewData["Title"]</h4>
+                <hr class="mt-2 mb-3" />
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div>
+                <img id="image" style="max-width: 500px" src="" />
+            </div>
+        </div>
+        <div class="col">
+            <form id="form" method="POST" asp-controller="Admin" asp-action="CreateCollection">
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="name" class="text">
+                                Name
+                            </label>
+                            <input id="name"
+                                   type="text"
+                                   name="name"
+                                   formControlName="name"
+                                   class="form-control"
+                                   aria-describedby="nameHelp"
+                                   value="@Model?.Name">
+                            <small id="nameHelp"
+                                   class="form-text text-danger small-left">
+                                @Html.ValidationMessageFor(x => x.Name)
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="imageUrl" class="text">
+                                Image url
+                            </label>
+                            <input id="imageUrl"
+                                   type="url"
+                                   name="imageUrl"
+                                   formControlName="imageUrl"
+                                   class="form-control"
+                                   aria-describedby="imageUrlHelp"
+                                   value="@Model?.ImageUrl">
+                            <small id="imageUrlHelp"
+                                   class="form-text text-danger small-left">
+                                @Html.ValidationMessageFor(x => x.ImageUrl)
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="price" class="text">
+                                Price
+                            </label>
+                            <input id="price"
+                                   type="number"
+                                   name="price"
+                                   formControlName="price"
+                                   class="form-control"
+                                   aria-describedby="priceHelp"
+                                   value="@Model?.Price">
+                            <small id="priceHelp"
+                                   class="form-text text-danger small-left">
+                                @Html.ValidationMessageFor(x => x.Price)
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="description" class="text">
+                                Description
+                            </label>
+                            <textarea id="description"
+                                      name="description"
+                                      class="form-control"
+                                      aria-describedby="descriptionHelp"
+                                      rows="3">
+                        @Model?.Description
+                    </textarea>
+                            <small id="descriptionHelp"
+                                   class="form-text text-danger small-left">
+                                @Html.ValidationMessageFor(x => x.Description)
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
+                @if (failed)
+                {
+                    <div class="row">
+                        <div class="col">
+                            <div class="alert alert-danger" role="alert">
+                                @code
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <div class="row">
+                    <div class="col">
+                        <button type="submit" class="btn btn-warning">
+                            Submit
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -8,6 +8,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using DigitalMarket.Data.Models;
+using System.Linq;
+using DigitalMarket.BisunessLogic.Queries.Transactions;
+using System;
 
 namespace DigitalMarket.Controllers
 {
@@ -16,11 +21,56 @@ namespace DigitalMarket.Controllers
     {
         private readonly IMediator _mediator;
         private readonly IStringLocalizerFactory _stringLocalizerFactory;
+        private readonly SignInManager<DigitalUser> _signInManager;
 
-        public AccountController(IMediator mediator, IStringLocalizerFactory stringLocalizerFactory)
+        public AccountController(
+            IMediator mediator, 
+            IStringLocalizerFactory stringLocalizerFactory,
+            SignInManager<DigitalUser> signInManager)
         {
             _mediator = mediator;
             _stringLocalizerFactory = stringLocalizerFactory;
+            _signInManager = signInManager;
+        }
+
+        [HttpGet("Me")]
+        [Authorize]
+        public async Task<IActionResult> Me()
+        {
+            var user = await _signInManager.UserManager.FindByNameAsync(User.Identity.Name);
+            var lastTransactions = await _mediator.Send(new GetTransactionsQuery
+            {
+                UserId = user.Id,
+                CountInPage = 5,
+                PageOffset = 0
+            });
+
+            TransactionType GetTransactionType(Guid userId, Guid fromUserId, Guid toUserId)
+            {
+                if (fromUserId == toUserId) return TransactionType.Drop;
+                if (userId == fromUserId) return TransactionType.Sell;
+                if (userId == toUserId) return TransactionType.Bought;
+                return TransactionType.None;
+            }
+
+            var model = new MeViewModel
+            {
+                Username = user.UserName,
+                Email = "example@email.com", //user.Email,
+                Balance = user.Balance,
+                LastTransactions = lastTransactions.Transactions.Select(x => new MyTransactionViewModel
+                {
+                    Id = x.Id,
+                    FromUser = x.FromUserId,
+                    ToUser = x.ToUserId,
+                    Payment = x.Payment,
+                    TransactionType = GetTransactionType(user.Id, x.FromUserId, x.ToUserId),
+                    Item = x.Item,
+                    CreateDateUtc = x.CreateDateUtc
+                }).ToArray()
+            };
+
+            return View(model);
         }
 
         [HttpGet("Login")]
@@ -52,12 +102,7 @@ namespace DigitalMarket.Controllers
                 return View();
             }
 
-
-            IStringLocalizer localizer = _stringLocalizerFactory.Create("Models.LoginModel", GetType().Assembly.FullName);
-
-            ModelState.AddModelError(nameof(LoginViewModel.Username), localizer["InvalidCredentials"]);
-            ModelState.AddModelError(nameof(LoginViewModel.Password), localizer["InvalidCredentials"]);
-
+            ViewBag.InvalidCredentials = true;
             return View(loginModel);
         }
 
@@ -76,17 +121,27 @@ namespace DigitalMarket.Controllers
                 return View(registerModel);
             }
 
-            RegistryResponse response = await _mediator.Send(registerModel.ToCommand());
+            DigitalUser user = registerModel.ToDigitalUser();
+            IdentityResult identityResult = await _signInManager.UserManager.CreateAsync(user, registerModel.Password);
 
-            if (response.Success)
+            if (identityResult.Succeeded)
             {
-                ViewBag.RequiresEmailConfirmation = true;
-                return View();
+                if (await _mediator.Send(new SendConfirmEmailLetterCommand { DigitalUser = user }))
+                {
+                    ViewBag.RequiresEmailConfirmation = true;
+                    return View();
+                }
+                else
+                {
+                    await _signInManager.UserManager.DeleteAsync(user);
+                    ViewBag.RegistryFailed = true;
+                    return View(registerModel);
+                }
             }
 
-            IStringLocalizer localizer = _stringLocalizerFactory.Create("Models.RegisterModel", GetType().Assembly.FullName);
+            HashSet<string> errorCodes = identityResult.Errors.Select(x => x.Code).ToHashSet();
             IdentityErrorDescriber describer = new IdentityErrorDescriber();
-            HashSet<string> errorCodes = response.ErrorCodes;
+            IStringLocalizer localizer = _stringLocalizerFactory.Create("Models.RegisterViewModel", GetType().Assembly.FullName);
 
             if (errorCodes.Contains(describer.DuplicateUserName(string.Empty).Code))
             {
@@ -196,6 +251,58 @@ namespace DigitalMarket.Controllers
             }
 
             return View(resetPassword);
+        }
+
+        [HttpGet("ChangePassword")]
+        [Authorize]
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+        
+        [HttpPost("ChangePassword")]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePassword([FromForm] ChangePasswordViewModel changePasswordViewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(changePasswordViewModel);
+            }
+
+            var currentUser = await _signInManager.UserManager.FindByNameAsync(User.Identity.Name);
+            var result = await _signInManager.UserManager.ChangePasswordAsync(currentUser, 
+                changePasswordViewModel.CurrentPassword, changePasswordViewModel.NewPassword);
+            var errorDescriber = new IdentityErrorDescriber();
+            
+            if (result.Succeeded)
+            {
+                await _signInManager.SignOutAsync();
+                RedirectToAction(nameof(Login));
+            }
+
+            var errorCodes = result.Errors.Select(x => x.Code).ToHashSet();
+            if (errorCodes.Contains(errorDescriber.PasswordMismatch().Code))
+            {
+                ModelState.AddModelError(nameof(ChangePasswordViewModel.CurrentPassword), "PasswordMismatch");
+            }
+
+            if (errorCodes.Contains(errorDescriber.PasswordRequiresDigit().Code))
+            {
+                ModelState.AddModelError(nameof(ChangePasswordViewModel.NewPassword), "PasswordRequiresDigit");
+            }
+
+            if (errorCodes.Contains(errorDescriber.PasswordRequiresUpper().Code))
+            {
+                ModelState.AddModelError(nameof(ChangePasswordViewModel.NewPassword), "PasswordRequiresUpper");
+            }
+
+            if (errorCodes.Contains(errorDescriber.PasswordRequiresNonAlphanumeric().Code))
+            {
+                ModelState.AddModelError(nameof(ChangePasswordViewModel.NewPassword), "PasswordRequiresNonAlphanumeric");
+            }
+
+            return View(changePasswordViewModel);
         }
 
         [HttpPost("Logout")]

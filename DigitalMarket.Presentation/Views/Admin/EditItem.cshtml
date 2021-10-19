@@ -1,0 +1,204 @@
+﻿@using DigitalMarket.BisunessLogic.Models;
+@model DigitalMarket.Presentation.Models.Admin.EditItemViewModel;
+@{
+    ViewData["Title"] = "Edit Item";
+    IEnumerable<Rarity> rarities = ViewBag.Rarities;
+    IEnumerable<Collection> collections = ViewBag.Collections;
+    bool failed = ViewBag.Failed == true;
+    string code = ViewBag.Code;
+}
+
+<script src="~/js/admin/collections/create-collection.js"></script>
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="container pt-2">
+                <h4>@ViewData["Title"]</h4>
+                <hr class="mt-2 mb-3" />
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div>
+                <img id="image" src="@Model.ImageUrl" style="max-width: 500px" />
+            </div>
+        </div>
+        <div class="col">
+            <form id="form" method="POST" asp-controller="Admin" asp-action="EditItem">
+                <div class="row hidden">
+                    <div class="col">
+                        <input name="id" value="@Model.Id"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="marketName" class="text">
+                                Name
+                            </label>
+                            <input id="marketName"
+                                   type="text"
+                                   name="marketName"
+                                   formControlName="marketName"
+                                   class="form-control"
+                                   aria-describedby="nameHelp"
+                                   value="@Model?.MarketName">
+                            <small id="marketNameHelp"
+                                   class="form-text text-danger small-left">
+                                @Html.ValidationMessageFor(x => x.MarketName)
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="imageUrl" class="text">
+                                Image Url
+                            </label>
+                            <input id="imageUrl"
+                                   type="url"
+                                   name="imageUrl"
+                                   formControlName="imageUrl"
+                                   class="form-control"
+                                   aria-describedby="imageUrlHelp"
+                                   value="@Model?.ImageUrl">
+                            <small id="imageUrlHelp"
+                                   class="form-text text-danger small-left">
+                                @Html.ValidationMessageFor(x => x.ImageUrl)
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="dropChance" class="text">
+                                Drop Chance
+                            </label>
+                            <input id="dropChance"
+                                   type="number"
+                                   name="dropChance"
+                                   formControlName="dropChance"
+                                   class="form-control"
+                                   aria-describedby="dropChanceHelp"
+                                   value="@Model?.DropChance">
+                            <small id="dropChanceHelp"
+                                   class="form-text text-danger small-left">
+                                @Html.ValidationMessageFor(x => x.DropChance)
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="rarityId" class="text">
+                                Rarity
+                            </label>
+
+                            <select id="rarityId" name="rarityId" class="form-select form-control" aria-describedby="rarityIdHelp">
+                                <option>Open this select menu</option>
+                                @foreach (var rarity in rarities)
+                                {
+                                    @if (rarity.Id == Model.RarityId)
+                                    {
+                                        <option value="@rarity.Id" selected>@rarity.Name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@rarity.Id">@rarity.Name</option>
+                                    }
+                                }
+                            </select>
+
+                            <small id="rarityIdHelp"
+                                   class="form-text text-danger small-left">
+                                @Html.ValidationMessageFor(x => x.RarityId)
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="collectionId" class="text">
+                                Collection
+                            </label>
+
+                            <select id="collectionId" name="collectionId" class="form-select form-control" aria-describedby="collectionIdHelp">
+                                <option>Open this select menu</option>
+                                @foreach (var collection in collections)
+                                {
+                                    @if (collection.Id == Model.CollectionId)
+                                    {
+                                        <option value="@collection.Id" selected>@collection.Name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@collection.Id">@collection.Name</option>
+                                    }
+
+                                }
+                            </select>
+
+                            <small id="collectionIdHelp"
+                                   class="form-text text-danger small-left">
+                                @Html.ValidationMessageFor(x => x.CollectionId)
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="description" class="text">
+                                Description
+                            </label>
+                            <textarea id="description"
+                                      name="description"
+                                      class="form-control"
+                                      aria-describedby="descriptionHelp"
+                                      rows="3">
+                        @Model?.Description
+                    </textarea>
+                            <small id="descriptionHelp"
+                                   class="form-text text-danger small-left">
+                                @Html.ValidationMessageFor(x => x.Description)
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
+                @if (failed)
+                {
+                    <div class="row">
+                        <div class="col">
+                            <div class="alert alert-danger" role="alert">
+                                @code
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-warning">
+                                Submit
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

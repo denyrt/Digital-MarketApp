@@ -23,6 +23,10 @@ namespace DigitalMarket.BisunessLogic.Commands.Items
             RuleFor(x => x.CollectionId)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage("Collection id is empty.");
+
+            RuleFor(x => x.DropChance)
+                .Cascade(CascadeMode.Stop)
+                .GreaterThanOrEqualTo(0d);
         }
     }
 }

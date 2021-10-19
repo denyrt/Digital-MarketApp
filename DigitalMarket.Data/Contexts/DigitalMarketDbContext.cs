@@ -12,6 +12,8 @@ namespace DigitalMarket.Data.Contexts
         public DbSet<DigitalItem> DigitalItems { get; set; }
         public DbSet<DigitalItemInstance> DigitalItemInstances { get; set; }
         public DbSet<DigitalRarity> DigitalRarities { get; set; }
+        public DbSet<DigitalTransaction> DigitalTransactions { get; set; }
+        public DbSet<DigitalSellOffer> DigitalSellOffers { get; set; }
 
         public DigitalMarketDbContext(DbContextOptions options) : base(options)
         {

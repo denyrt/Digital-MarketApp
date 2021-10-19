@@ -7,6 +7,8 @@ namespace DigitalMarket.BisunessLogic.Commands.Collections
     {
         public Guid Id { get; init; }
         public string Name { get; init; }
+        public string ImageUrl { get; init; }
+        public double Price { get; init; }
         public string Description { get; init; }
     }
 }

@@ -1,0 +1,59 @@
+﻿@using DigitalMarket.Presentation.Models.Inventory;
+@model IEnumerable<ItemInstanceViewModel>; 
+@{
+    ViewData["Title"] = "Inventory";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h4>Your inventory</h4>
+            <hr class="mt-2 mb-3" />
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        @if (!Model.Any())
+        {
+        <div class="col">
+            <div class="alert alert-info" role="alert">
+                <p>
+                    Your inventory is empty! Buy items at marketplace or try your luck at the Store. There are a lot of boxes with different drop.
+                </p>
+            </div>
+            <div>
+                <button class="btn btn-link">
+                    Marketplace
+                </button>
+
+                <button class="btn btn-link">
+                    Store
+                </button>
+            </div>
+        </div>
+        }
+        @foreach (var instance in Model)
+        {
+            <div class="col-sm-3 p-2">
+                <div class="card">
+                    <img class="card-img-top" src="@instance.Item.ImageUrl" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">@instance.Item.MarketName</h5>
+                        <h6 class="card-subtitle mb-2">
+                            <span class="badge badge-warning">@instance.Item.Rarity.Name</span>
+                            <span class="badge badge-warning">@instance.Item.Collection.Name</span>
+                        </h6>
+                        <a class="card-link" asp-controller="Store" asp-action="Item" asp-route-id="@instance.Item.Id">
+                            View
+                        </a>
+                        <button class="card-link btn btn-link">
+                            Sell at marketplace
+                        </button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

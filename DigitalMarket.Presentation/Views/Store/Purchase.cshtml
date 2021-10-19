@@ -1,0 +1,32 @@
+﻿@using DigitalMarket.Presentation.Models.Store;
+@model PurchaseViewModel;
+@{
+    ViewData["Title"] = "Purchase";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="container pt-2">
+                <h4>@ViewData["Title"]</h4>
+                <hr class="mt-2 mb-3" />
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="alert alert-warning" role="alert">
+                Do you want buy '@Model.Collection.Name' for a @Model.Collection.Price$ ??
+            </div>
+            <div>
+                <form method="POST" asp-controller="Store" asp-action="Purchase" asp-route-id="@Model.Collection.Id">
+                    <button class="btn btn-warning">
+                        Yes
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

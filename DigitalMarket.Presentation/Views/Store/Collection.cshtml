@@ -1,0 +1,116 @@
+﻿@model DigitalMarket.BisunessLogic.Queries.Collections.GetCollectionResponse;
+@{
+    ViewData["Title"] = Model?.Collection?.Name;
+}
+
+<div class="container pt-5">
+    <div class="row">
+        <div class="col-sm-6">
+            <img style="max-width: 500px" src="@Model?.Collection?.Image" />
+        </div>
+
+        <div class="col">
+            <div class="pl-5 pt-3">
+                <div class="row">
+                    <div class="col">
+                        <h4 class="text">@Model?.Collection?.Name</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="pt-2 pb-2">
+                            <h4><span class="badge badge-info">Box</span></h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col pb-2">
+                        <div class="overflow-auto" style="max-height: 300px">
+                            <p>@Model?.Collection?.Description</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label>Price</label>
+                        <h3>@Model?.Collection?.Price $</h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col pt-3">
+                        <button class="btn btn-warning w-100" data-toggle="modal" data-target="#exampleModal">
+                            Buy Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container pt-3">
+    <div class="row">
+        <div class="col">
+            <h4>Drop from this case</h4>
+            <hr class="mt-2 mb-3" />
+        </div>
+    </div>
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Item</th>
+                <th scope="col">Rank</th>
+                <th scope="col">Probability</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td><a asp-controller="Store" asp-action="Item" asp-route-id="@item.Id">@item.MarketName</a></td>
+                    <td>
+                        <label class="text">
+                            <span class="badge badge-warning text-light">@item.Rarity.Name</span>
+                        </label>
+                    </td>
+                    <td>@item.DropChance %</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirm your purchase</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="p-1">
+                    <h6>Collection</h6>
+                    <label class="text-monospace">@Model.Collection.Name</label>
+                    <hr />
+                </div>
+                <div class="p-1">
+                    <h6>Cost</h6>
+                    <label class="text-monospace">@Model.Collection.Price$</label>
+                    <hr />
+                </div>
+                <div class="alert alert-warning" role="alert">
+                    You will get random drop from this collection after purchase.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+                <form method="POST" asp-controller="Store" asp-action="Purchase" asp-route-id="@Model.Collection.Id">
+                    <button type="submit" class="btn btn-warning">Yes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

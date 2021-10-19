@@ -1,0 +1,106 @@
+﻿@model DigitalMarket.Presentation.Models.Account.MeViewModel;
+@{
+    ViewData["Title"] = "Account";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-5">
+            <div class="container pt-2">
+                <h4>Account</h4>
+                <hr class="mt-2 mb-3" />
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <label>Your Balance</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">$</span>
+                            <input class="input-group-text form-control" value="@Model.Balance" readonly />
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button">Donate</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label for="username">Username</label>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" id="username" value="@Model.Username" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label for="username">Email</label>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" id="email" value="@Model.Email" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <a class="btn btn-primary" asp-controller="Account" asp-action="ChangePassword">
+                            Change Password
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="container pt-2">
+                <h4>Your state:</h4>
+                <hr class="mt-2 mb-3" />
+            </div>
+            <div class="container">
+                <div>
+                    Some info.
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="container pt-3">
+                <h4>Transaction History</h4>
+                <hr class="mt-2 mb-3" />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="container">
+                <table id="transactions" class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Item</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Payment</th>
+                            <th scope="col">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var transaction in Model.LastTransactions)
+                        {
+                            <tr>
+                                <td><a href="#" class="btn btn-link">Details</a></td>
+                                <td>
+                                    <a asp-controller="Store" 
+                                       asp-action="Item" 
+                                       asp-route-id="@transaction.Item.Id">
+                                    @transaction.Item.MarketName
+                                    </a>
+                                </td>
+                                <td>@transaction.TransactionType</td>
+                                <td class="text-monospace">@transaction.Payment$</td>
+                                <td class="text-monospace">@transaction.CreateDateUtc.ToShortDateString() - @transaction.CreateDateUtc.ToShortTimeString()</td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+            </div>
+        </div>
+    </div>
+</div>

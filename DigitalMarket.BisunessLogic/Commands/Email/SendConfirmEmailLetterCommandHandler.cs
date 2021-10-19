@@ -24,7 +24,7 @@ namespace DigitalMarket.BisunessLogic.Commands.Email
         public async Task<bool> Handle(SendConfirmEmailLetterCommand request, CancellationToken cancellationToken)
         {
             string token = await _aspNetUserManager.GenerateEmailConfirmationTokenAsync(request.DigitalUser);
-            string confirmUrl = string.Format("{0}/Sign-In/ConfirmEmail?username={1}&token={2}",
+            string confirmUrl = string.Format("{0}/Account/ConfirmEmail?username={1}&token={2}",
                 EnvironmentConstants.BackendHost,
                 Uri.EscapeDataString(request.DigitalUser.UserName),
                 Uri.EscapeDataString(token));

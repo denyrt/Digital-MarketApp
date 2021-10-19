@@ -1,6 +1,7 @@
 ﻿using DigitalMarket.Data.Contexts;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,8 +18,13 @@ namespace DigitalMarket.BisunessLogic.Queries.Collections
 
         public async Task<GetCollectionsResponse> Handle(GetCollectionsQuery request, CancellationToken cancellationToken)
         {
-            var collections = await _digitalMarketDbContext.DigitalCollections.ToArrayAsync(cancellationToken);
-            return GetCollectionsResponse.FromSuccess(collections);
+            var collections = _digitalMarketDbContext.DigitalCollections.AsQueryable();
+            if (request.OnlyAvailable)
+            {
+                collections = collections.Where(x => x.AvailableAtMarket);
+            }
+            var fetch = await collections.ToArrayAsync(cancellationToken);
+            return GetCollectionsResponse.FromSuccess(fetch);
         }
     }
 }

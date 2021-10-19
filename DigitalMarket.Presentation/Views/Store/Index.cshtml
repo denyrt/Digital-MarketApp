@@ -1,0 +1,45 @@
+﻿@model IEnumerable<DigitalMarket.BisunessLogic.Models.Collection>;
+@{
+    ViewData["Title"] = "Market";
+}
+
+<link rel="stylesheet" href="~/css/market.css" />
+
+<div class="container">
+    <div class="row">
+        <div class="container pt-2">
+            <h4>Market</h4>
+            <hr class="mt-2 mb-3" />
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        @foreach(var collection in Model)
+            {
+                <div class="col-sm-3 p-2">
+                    <div class="card">
+                        <img class="car-img-top" src="@collection.Image"/>
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                @collection.Name
+                            </h5>
+                            <p class="card-text">
+                                @collection.Description
+                            </p>
+                            <div class="card-body">
+                                <a class="card-link" asp-controller="Store" asp-action="Collection" asp-route-id="@collection.Id">View</a>
+                                <a asp-controller="Store" 
+                                   asp-action="Purchase" 
+                                   asp-route-id="@collection.Id"
+                                   class="card-link">
+                                Buy - @collection.Price$
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+    </div>
+</div>

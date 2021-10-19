@@ -27,9 +27,9 @@ namespace DigitalMarket.Presentation.Controllers.Api
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetItems()
+        public async Task<IActionResult> GetItems([FromQuery] GetItemsQuery query)
         {
-            var result = await _mediator.Send(new GetItemsQuery());
+            var result = await _mediator.Send(query);
             return result.ToActionResult();
         }
 

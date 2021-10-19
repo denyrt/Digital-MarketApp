@@ -1,6 +1,7 @@
 ﻿using DigitalMarket.Data.Contexts;
 using DigitalMarket.Domain.Constants;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,8 +18,12 @@ namespace DigitalMarket.BisunessLogic.Queries.Collections
 
         public async Task<GetCollectionResponse> Handle(GetCollectionQuery request, CancellationToken cancellationToken)
         {
-            var keyValues = new object[] { request.Id };
-            var collection = await _digitalMarketDbContext.DigitalCollections.FindAsync(keyValues, cancellationToken);
+            var collection = await _digitalMarketDbContext.DigitalCollections
+                .Include(x => x.DigitalItems)
+                .ThenInclude(x => x.DigitalRarity)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+         
             if (collection == null)
             {
                 return GetCollectionResponse.FromError(ResponseCodes.NotFound);

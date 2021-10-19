@@ -1,4 +1,6 @@
-﻿using DigitalMarket.BisunessLogic.Extensions;
+﻿using DigitalMarket.Application.Interfaces;
+using DigitalMarket.Application.Services;
+using DigitalMarket.BisunessLogic.Extensions;
 using DigitalMarket.BisunessLogic.Pipelines;
 using DigitalMarket.Data.Models;
 using FluentValidation;
@@ -35,6 +37,8 @@ namespace DigitalMarket.Presentation.Extensions.DependencyInjection
             services.AddMediatR(BisunessLogicAssembly.GetAssembly());
             services.AddValidatorsFromAssembly(BisunessLogicAssembly.GetAssembly());
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
+            services.AddScoped<IUserHelper, UserHelper>();
+            services.AddScoped<IStoreService, StoreService>();
 
             return services;
         }
