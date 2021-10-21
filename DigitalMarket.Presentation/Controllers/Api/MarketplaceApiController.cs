@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace DigitalMarket.Presentation.Controllers.Api
 {
-    [Route("api/[controller]")]
+    [Route("api/marketplace")]
     [ApiController]
     [Authorize]
     public class MarketplaceApiController : ControllerBase
@@ -25,7 +25,7 @@ namespace DigitalMarket.Presentation.Controllers.Api
             _mediator = mediator;
         }
 
-        [HttpPost("CreateSellOffer")]
+        [HttpPost("create-sell-offer")]
         public async Task<IActionResult> CreteSellOffer([FromBody] CreateSellOfferViewModel request)
         {
             var currentUser = await _userHelper.GetCurrentUser();
@@ -35,6 +35,13 @@ namespace DigitalMarket.Presentation.Controllers.Api
                 Price = request.Price,
                 UserId = currentUser.Id
             });
+            return response.ToActionResult();
+        }
+
+        [HttpPost("cancel-cell-offer")]
+        public async Task<IActionResult> CancelSellOffer([FromBody] CancelSellOfferCommand command)
+        {
+            var response = await _mediator.Send(command);
             return response.ToActionResult();
         }
 

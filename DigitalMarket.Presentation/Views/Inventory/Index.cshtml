@@ -1,8 +1,10 @@
 ﻿@using DigitalMarket.Presentation.Models.Inventory;
-@model IEnumerable<ItemInstanceViewModel>; 
+@model IEnumerable<ItemInstanceViewModel>;
 @{
     ViewData["Title"] = "Inventory";
 }
+
+<script type="module" src="~/js/inventory/inventory-view.js"></script>
 
 <div class="container">
     <div class="row">
@@ -17,43 +19,68 @@
     <div class="row">
         @if (!Model.Any())
         {
-        <div class="col">
-            <div class="alert alert-info" role="alert">
-                <p>
-                    Your inventory is empty! Buy items at marketplace or try your luck at the Store. There are a lot of boxes with different drop.
-                </p>
-            </div>
-            <div>
-                <button class="btn btn-link">
-                    Marketplace
-                </button>
+            <div class="col">
+                <div class="alert alert-info" role="alert">
+                    <p>
+                        Your inventory is empty! Buy items at marketplace or try your luck at the Store. There are a lot of boxes with different drop.
+                    </p>
+                </div>
+                <div>
+                    <button class="btn btn-link">
+                        Marketplace
+                    </button>
 
-                <button class="btn btn-link">
-                    Store
-                </button>
+                    <button class="btn btn-link">
+                        Store
+                    </button>
+                </div>
             </div>
-        </div>
         }
         @foreach (var instance in Model)
         {
-            <div class="col-sm-3 p-2">
-                <div class="card">
+            <div data="@instance.Id" class="col-sm-3 p-2">
+                <div class="card item-instance-card">
                     <img class="card-img-top" src="@instance.Item.ImageUrl" alt="Card image cap">
                     <div class="card-body">
-                        <h5 class="card-title">@instance.Item.MarketName</h5>
+                        <h5 class="card-title">
+                            @instance.Item.MarketName
+                            @if (instance.Price.HasValue)
+                            {
+                                <span class="badge badge-info text-monospace">@instance.Price$</span>
+                            }
+                        </h5>
                         <h6 class="card-subtitle mb-2">
                             <span class="badge badge-warning">@instance.Item.Rarity.Name</span>
                             <span class="badge badge-warning">@instance.Item.Collection.Name</span>
                         </h6>
-                        <a class="card-link" asp-controller="Store" asp-action="Item" asp-route-id="@instance.Item.Id">
-                            View
-                        </a>
-                        <button class="card-link btn btn-link">
-                            Sell at marketplace
-                        </button>
+                        <div>
+                            <div>
+                                <a class="card-link btn btn-link" asp-controller="Store" asp-action="Item" asp-route-id="@instance.Item.Id">
+                                    View
+                                </a>
+                            </div>
+                            <div>
+                                @if (instance.SellOfferId.HasValue && instance.Price.HasValue)
+                                {
+                                    <div>
+                                        <button data="@instance.SellOfferId" class="card-link btn btn-link cancel-offer">
+                                            Cancel sell offer
+                                        </button>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <button class="card-link btn btn-link sell-at-marketplace">
+                                        Sell at marketplace
+                                    </button>
+                                }
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         }
     </div>
 </div>
+
+<div class="modal fade" id="sellItemDialog" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true"></div>

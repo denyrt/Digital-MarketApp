@@ -27,19 +27,21 @@ namespace DigitalMarket.Presentation.Controllers.Mvc
         {            
             var currentUser = await _userHelper.GetCurrentUser();
             var instances = await _digitalMarketDbContext.DigitalItemInstances
+                .Include(x => x.DigitalSellOffer)
                 .Include(x => x.DigitalItem)
                 .ThenInclude(item => item.DigitalCollection)
                 .Include(x => x.DigitalItem.DigitalRarity)
                 .Where(x => x.OwnerId == currentUser.Id)
-                .Select(x => new ItemInstanceViewModel 
-                {
-                    Id = x.Id,
-                    Item = x.DigitalItem.ToItem()
-                })
                 .AsNoTracking()
                 .ToArrayAsync();
 
-            return View(instances);
+            return View(instances.Select(x => new ItemInstanceViewModel 
+                {
+                    Id = x.Id,
+                    Item = x.DigitalItem.ToItem(),
+                    SellOfferId = x.DigitalSellOffer?.Id,
+                    Price = x.DigitalSellOffer?.Price
+                }).ToArray());
         }
     }
 }
