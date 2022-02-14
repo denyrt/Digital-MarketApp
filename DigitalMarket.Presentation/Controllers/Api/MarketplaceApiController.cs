@@ -1,6 +1,7 @@
 ﻿using DigitalMarket.Application.Interfaces;
 using DigitalMarket.BisunessLogic.Commands.Marketplace;
 using DigitalMarket.BisunessLogic.Queries.Marketplace;
+using DigitalMarket.BisunessLogic.Queries.Transactions;
 using DigitalMarket.Presentation.Extensions;
 using DigitalMarket.Presentation.Models.Marketplace;
 using MediatR;
@@ -57,6 +58,13 @@ namespace DigitalMarket.Presentation.Controllers.Api
         {
             var currentUser = await _userHelper.GetCurrentUser();
             var response = await _mediator.Send(new BuyItemCommand { BuyerId = currentUser.Id, OfferId = offerId });
+            return response.ToActionResult();
+        }
+
+        [HttpGet("transactions")]
+        public async Task<IActionResult> GetTransactionsForInstance([FromQuery] GetTransactionsForInstanceQuery query)
+        {
+            var response = await _mediator.Send(query);
             return response.ToActionResult();
         }
     }

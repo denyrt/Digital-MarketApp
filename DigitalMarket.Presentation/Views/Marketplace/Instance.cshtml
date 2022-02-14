@@ -1,0 +1,105 @@
+﻿@model DigitalMarket.Presentation.Models.Marketplace.InstanceViewModel;
+@{
+    ViewData["Title"] = Model.Item.MarketName; 
+}
+
+<div class="container pt-5">
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="col">
+                <img style="max-width: 500px" src="@Model.Item.ImageUrl" />
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="pl-5 pt-3">
+                <div class="row">
+                    <div class="col">
+                        <h4 class="text">@Model.Item.MarketName</h4>
+                        <div class="text-monospace">
+                            <small class="font-weight-bold">InstanceId:</small>
+                            <small class="font-weight-light">@Model.Id</small>
+                        </div>
+                        <div class="text-monospace">
+                            <small class="font-weight-bold">Current Owner:</small>
+                            <small class="font-weight-light">@Model.CurrentOwner</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="pt-2 pb-2">
+                            <h4>
+                                <a class="badge badge-primary" asp-controller="Store" asp-action="Collection" asp-route-id="@Model.Item.Collection.Id">
+                                    @Model.Item.Collection.Name
+                                </a>
+                            </h4>
+                            <h4><span class="badge badge-warning">@Model.Item.Rarity.Name</span></h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col pb-2">
+                        <div class="overflow-auto" style="max-height: 300px">
+                            <p>@Model.Item.Description</p>
+                        </div>
+                    </div>
+                </div>
+                @if (Model.OfferId.HasValue && Model.Price.HasValue)
+                {
+                    <div class="row">
+                        <div class="col">
+                            <button class="btn btn-warning w-100">
+                                Buy now for a <span class="text-monospace">@Model.Price$</span>
+                            </button>
+                        </div>
+                    </div>
+                }
+                <div class="row">
+                    <div class="col pt-3">
+                        <button class="btn btn-warning w-100">
+                            Show at marketplace
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="container pt-3">
+                <h4>Last transactions</h4>
+                <hr class="mt-2 mb-3" />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="container">
+                <table id="transactions" class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">From User</th>
+                            <th scope="col">To User</th>
+                            <th scope="col">Payment</th>
+                            <th scope="col">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var transaction in Model.LastTransactions)
+                        {
+                            <tr>
+                                <td><a href="#" class="btn btn-link">Details</a></td>
+                                <td class="text-monospace">@transaction.FromUserId</td>
+                                <td class="text-monospace">@transaction.ToUserId</td>
+                                <td class="text-monospace">@transaction.Payment$</td>
+                                <td class="text-monospace">@transaction.CreateDateUtc.ToShortDateString() - @transaction.CreateDateUtc.ToShortTimeString()</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

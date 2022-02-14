@@ -8,8 +8,8 @@ namespace DigitalMarket.BisunessLogic.Models
         public Guid Id { get; init; }
         public Guid FromUserId { get; init; }
         public Guid ToUserId { get; init; }
+        public Guid InstanceId { get; init; }
         public double Payment { get; init; }
-        public Item Item { get; init; }
         public DateTime CreateDateUtc { get; init; }
     }
 
@@ -23,7 +23,7 @@ namespace DigitalMarket.BisunessLogic.Models
                 ToUserId = digitalTransaction.ToUserId,
                 FromUserId = digitalTransaction.FromUserId,
                 Payment = digitalTransaction.Price,
-                Item = digitalTransaction.ItemInstance?.DigitalItem?.ToItem(),
+                InstanceId = digitalTransaction.InstanceId,
                 CreateDateUtc = digitalTransaction.CreateTimeUtc
             };
         }

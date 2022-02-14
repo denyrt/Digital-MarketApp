@@ -45,7 +45,7 @@ namespace DigitalMarket.Controllers
                 PageOffset = 0
             });
 
-            TransactionType GetTransactionType(Guid userId, Guid fromUserId, Guid toUserId)
+            static TransactionType GetTransactionType(Guid userId, Guid fromUserId, Guid toUserId)
             {
                 if (fromUserId == toUserId) return TransactionType.Drop;
                 if (userId == fromUserId) return TransactionType.Sell;
@@ -65,7 +65,7 @@ namespace DigitalMarket.Controllers
                     ToUser = x.ToUserId,
                     Payment = x.Payment,
                     TransactionType = GetTransactionType(user.Id, x.FromUserId, x.ToUserId),
-                    Item = x.Item,
+                    InstanceId = x.InstanceId,
                     CreateDateUtc = x.CreateDateUtc
                 }).ToArray()
             };
@@ -143,7 +143,7 @@ namespace DigitalMarket.Controllers
             IdentityErrorDescriber describer = new IdentityErrorDescriber();
             IStringLocalizer localizer = _stringLocalizerFactory.Create("Models.RegisterViewModel", GetType().Assembly.FullName);
 
-            if (errorCodes.Contains(describer.DuplicateUserName(string.Empty).Code))
+            if (errorCodes.Contains(describer.DuplicateEmail(string.Empty).Code))
             {
                 ModelState.AddModelError(nameof(RegisterViewModel.Email), localizer["ValidationDuplicateEmail"].Value);
             }

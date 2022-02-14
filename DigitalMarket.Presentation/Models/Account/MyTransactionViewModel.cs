@@ -1,5 +1,4 @@
-﻿using DigitalMarket.BisunessLogic.Models;
-using System;
+﻿using System;
 
 namespace DigitalMarket.Presentation.Models.Account
 {
@@ -9,9 +8,9 @@ namespace DigitalMarket.Presentation.Models.Account
         public TransactionType TransactionType { get; init; }
         public Guid FromUser { get; init; }
         public Guid ToUser { get; init; }
+        public Guid InstanceId { get; init; }
         public double Payment { get; init; }
         public DateTime CreateDateUtc { get; init; }
-        public Item Item { get; init; }
     }
 
     public enum TransactionType

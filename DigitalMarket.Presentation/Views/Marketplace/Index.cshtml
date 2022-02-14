@@ -1,5 +1,9 @@
-﻿@{
+﻿@using DigitalMarket.BisunessLogic.Models;
+@model DigitalMarket.Presentation.Models.Marketplace.MarketplaceViewModel;
+@{
     ViewData["Title"] = "Marketplace";
+    IEnumerable<Rarity> rarities = ViewBag.Rarities;
+    IEnumerable<Collection> collections = ViewBag.Collections;
 }
 
 <div class="container">
@@ -11,8 +15,95 @@
     </div>
 </div>
 
+<div class="container pb-3">
+    <div class="row">
+        <div class="col-3">
+            <div class="form-group">
+                <select id="rarityId" name="rarityId" class="form-select form-control" aria-describedby="rarityIdHelp">
+                                <option selected>select rarity...</option>
+                                @foreach (var rarity in rarities)
+                                {
+                                <option value="@rarity.Id">@rarity.Name</option>
+                                }
+                                
+               </select>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="form-group">
+                <select id="collectionId" name="collectionId" class="form-select form-control" aria-describedby="collectionIdHelp">
+                                <option selected>select collection...</option>
+                                @foreach (var collection in collections)
+                                {
+                                <option value="@collection.Id">@collection.Name</option>
+                                }
+                </select>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="form-group">
+                <input class="form-control" type="number" placeholder="Min Price" />
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="form-group">
+                <input class="form-control" type="number" placeholder="Max Price" />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <input id="itemName" class="form-control" placeholder="Search by item name" />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class=col>
+            <div class="form-group">
+                <button id="apllyFilterButton" class="btn btn-primary">
+                    Aplly filter
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="container">
     <div class="row">
-
+        @foreach (var offer in Model.SellOffers)
+        {
+            <div class="col-sm-3">
+                <div class="card">
+                    <img class="card-img-top" src="@offer.Item.ImageUrl" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            @offer.Item.MarketName
+                        </h5>
+                        <hr />
+                        <h5><span class="badge badge-success text-right text-monospace">@offer.Price$</span></h5>
+                        <p class="card-text">
+                            <span class="badge badge-warning">@offer.Item.Rarity.Name</span>
+                            <a class="badge badge-primary"
+                               asp-controller="Store"
+                               asp-action="Collection"
+                               asp-route-id="@offer.Item.Collection.Id">
+                                @offer.Item.Collection.Name
+                            </a>
+                        </p>
+                        <a class="btn btn-primary"
+                           asp-controller="Marketplace"
+                           asp-action="Instance"
+                           asp-route-id="@offer.InstanceId"
+                        >
+                            View
+                        </a>
+                        <button class="btn btn-warning">
+                            Buy
+                        </button>
+                    </div>
+                </div>
+            </div>
+        }
     </div>
 </div>

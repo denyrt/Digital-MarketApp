@@ -17,8 +17,4 @@
     <ProjectReference Include="..\DigitalMarket.Domain\DigitalMarket.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Queries\SignIn\" />
-  </ItemGroup>
-
 </Project>

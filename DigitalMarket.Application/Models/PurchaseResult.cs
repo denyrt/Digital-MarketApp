@@ -12,7 +12,7 @@ namespace DigitalMarket.Application.Models
         {
             return new()
             {
-                Success = true,
+                Success = false,
                 ErrorMessage = message
             };
         }

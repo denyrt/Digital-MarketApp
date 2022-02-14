@@ -75,7 +75,7 @@
                     <thead>
                         <tr>
                             <th scope="col"></th>
-                            <th scope="col">Item</th>
+                            <th scope="col">Instance</th>
                             <th scope="col">Type</th>
                             <th scope="col">Payment</th>
                             <th scope="col">Date</th>
@@ -86,11 +86,11 @@
                         {
                             <tr>
                                 <td><a href="#" class="btn btn-link">Details</a></td>
-                                <td>
-                                    <a asp-controller="Store" 
-                                       asp-action="Item" 
-                                       asp-route-id="@transaction.Item.Id">
-                                    @transaction.Item.MarketName
+                                <td class="text-monospace">
+                                    <a asp-controller="Marketplace" 
+                                       asp-action="Instance" 
+                                       asp-route-id="@transaction.InstanceId">
+                                    @transaction.InstanceId
                                     </a>
                                 </td>
                                 <td>@transaction.TransactionType</td>
